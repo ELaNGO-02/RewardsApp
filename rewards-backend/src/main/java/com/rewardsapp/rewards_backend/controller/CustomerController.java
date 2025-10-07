@@ -2,11 +2,14 @@ package com.rewardsapp.rewards_backend.controller;
 
 import com.rewardsapp.rewards_backend.entity.Customer;
 import com.rewardsapp.rewards_backend.repository.CustomerRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
+@Tag(name = "Customer", description = "Customer CRUD APIs")
 @CrossOrigin("*")
 public class CustomerController {
 
@@ -17,12 +20,14 @@ public class CustomerController {
     }
 
     // CREATE a new customer
+    @Operation(summary = "Create a new customer")
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer) {
         return customerRepository.save(customer);
     }
 
     // READ all customers
+    @Operation(summary = "Get all customers")
     @GetMapping
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();

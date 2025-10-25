@@ -1,0 +1,24 @@
+<h2>Customers</h2>
+<div *ngIf="customers.length > 0; else noCustomers">
+  <div *ngFor="let c of customers" class="customer-card">
+    <h3>{{ c.name || 'No name' }}</h3>
+    <p>Email: {{ c.email || 'No email' }}</p>
+    <p>Transactions: {{ c.transactions?.length || 0 }}</p>
+  </div>
+</div>
+
+<ng-template #noCustomers>
+  <p>No customers found.</p>
+</ng-template>
+
+<h2>Rewards</h2>
+<div *ngIf="rewards.length > 0; else noRewards">
+  <div *ngFor="let r of rewards" class="reward-card">
+    <p>Customer ID: {{ r.customerId }} - Points: {{ r.totalPoints }}</p>
+  </div>
+</div>
+
+<ng-template #noRewards>
+  <p>No rewards found.</p>
+</ng-template>
+

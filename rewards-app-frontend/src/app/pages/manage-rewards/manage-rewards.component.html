@@ -1,0 +1,32 @@
+<div class="container">
+  <h2>🧾 Manage Customer Transactions</h2>
+
+  <form (submit)="addTransaction(); $event.preventDefault()">
+    <input type="number" placeholder="Customer ID" [(ngModel)]="newTransaction.customer.id" name="customerId" required>
+    <input type="number" placeholder="Purchase Amount" [(ngModel)]="newTransaction.purchaseAmount" name="purchaseAmount" required>
+    <input type="date" [(ngModel)]="newTransaction.purchaseDate" name="purchaseDate" required>
+    <button type="submit">Add Transaction</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Customer ID</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of transactions">
+        <td>{{ t.id }}</td>
+        <td>{{ t.customer?.id }}</td>
+        <td>{{ t.purchaseAmount }}</td>
+        <td>{{ t.purchaseDate }}</td>
+        <td><button (click)="deleteTransaction(t.id)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

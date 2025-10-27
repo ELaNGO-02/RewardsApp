@@ -12,13 +12,38 @@
 </ng-template>
 
 <h2>Rewards</h2>
-<div *ngIf="rewards.length > 0; else noRewards">
-  <div *ngFor="let r of rewards" class="reward-card">
-    <p>Customer ID: {{ r.customerId }} - Points: {{ r.totalPoints }}</p>
+<!-- Filters Section -->
+<div class="filters mb-4">
+  <label for="month">Month:</label>
+  <select id="month" [(ngModel)]="selectedMonth" (change)="filterRewards()">
+    <option value="">All</option>
+    <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+  </select>
+
+  <label for="year" class="ml-3">Year:</label>
+  <select id="year" [(ngModel)]="selectedYear" (change)="filterRewards()">
+    <option value="">All</option>
+    <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+  </select>
+</div>
+
+<!-- Rewards Display -->
+<div *ngIf="filteredRewards.length > 0; else noRewards">
+  <div *ngFor="let r of filteredRewards" class="reward-card border p-3 rounded mb-3 shadow-sm">
+    <h3>Customer ID: {{ r.customerId }}</h3>
+    <p><strong>Total Points:</strong> {{ r.totalPoints }}</p>
+    <p><strong>Month:</strong> {{ r.month }} / <strong>Year:</strong> {{ r.year }}</p>
+
+    <h4 class="mt-2">Transactions:</h4>
+    <ul>
+      <li *ngFor="let t of r.transactions">
+        💰 <strong>{{ t.purchaseAmount }}</strong> | 🗓️ {{ t.purchaseDate }}
+      </li>
+    </ul>
   </div>
 </div>
 
 <ng-template #noRewards>
-  <p>No rewards found.</p>
+  <p>No rewards found for the selected month/year.</p>
 </ng-template>
 

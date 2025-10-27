@@ -1,12 +1,15 @@
 package com.rewardsapp.rewards_backend.controller;
 
+import com.rewardsapp.rewards_backend.dto.DTOMapper;
+import com.rewardsapp.rewards_backend.dto.TransactionDTO;
 import com.rewardsapp.rewards_backend.entity.Customer;
 import com.rewardsapp.rewards_backend.entity.Transaction;
 import com.rewardsapp.rewards_backend.repository.CustomerRepository;
 import com.rewardsapp.rewards_backend.repository.TransactionRepository;
 import com.rewardsapp.rewards_backend.service.RewardService;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -27,34 +30,36 @@ public class TransactionController {
     }
 
     @PostMapping
-    public Transaction addTransaction(@RequestBody Transaction transaction) {
-        // Load the customer from DB using the customerId
+    public TransactionDTO addTransaction(@RequestBody Transaction transaction) {
         Customer customer = customerRepository.findById(transaction.getCustomer().getId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
         transaction.setCustomer(customer);
 
         Transaction saved = transactionRepository.save(transaction);
 
-        // Calculate rewards
         rewardService.calculateAndSaveReward(
                 saved.getCustomer().getId(),
                 saved.getPurchaseAmount(),
                 saved.getPurchaseDate()
         );
 
-        return saved;
+        return DTOMapper.toTransactionDTO(saved);
     }
 
     @GetMapping
-    public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
+    public List<TransactionDTO> getAllTransactions() {
+        return transactionRepository.findAll()
+                .stream()
+                .map(DTOMapper::toTransactionDTO)
+                .toList();
     }
 
     @DeleteMapping("/{id}")
     public void deleteTransaction(@PathVariable Long id) {
-        if (!transactionRepository.existsById(id)) {
-            throw new RuntimeException("Transaction not found");
-        }
         transactionRepository.deleteById(id);
     }
 }
+
+
+
+

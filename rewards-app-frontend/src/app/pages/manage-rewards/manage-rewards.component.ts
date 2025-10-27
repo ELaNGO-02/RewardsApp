@@ -23,22 +23,23 @@ export class ManageRewardsComponent implements OnInit {
   getTransactions() {
     this.rewardsService.getTransactions().subscribe(data => {
       this.transactions = data;
+      console.log(this.transactions);
     });
   }
 
   addTransaction() {
-    // Convert purchaseAmount to number
-    const transactionToSend = {
-      customer: { id: Number(this.newTransaction.customer.id) },
-      purchaseAmount: Number(this.newTransaction.purchaseAmount),
-      purchaseDate: this.newTransaction.purchaseDate
-    };
+  const transactionToSend = {
+    customer: { id: Number(this.newTransaction.customer.id) },
+    purchaseAmount: Number(this.newTransaction.purchaseAmount),
+    purchaseDate: this.newTransaction.purchaseDate
+  };
 
-    this.rewardsService.addTransaction(transactionToSend).subscribe(() => {
-      this.getTransactions(); // refresh list
-      this.newTransaction = { customer: { id: null }, purchaseAmount: '', purchaseDate: '' };
-    });
-  }
+  this.rewardsService.addTransaction(transactionToSend).subscribe(() => {
+    this.getTransactions(); // refresh list
+    this.newTransaction = { customer: { id: null }, purchaseAmount: '', purchaseDate: '' };
+  });
+}
+
 
   deleteTransaction(id: number) {
     this.rewardsService.deleteTransaction(id).subscribe(() => {

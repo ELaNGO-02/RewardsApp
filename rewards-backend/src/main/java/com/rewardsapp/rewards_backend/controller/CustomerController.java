@@ -1,11 +1,15 @@
 package com.rewardsapp.rewards_backend.controller;
 
+import com.rewardsapp.rewards_backend.dto.CustomerDTO;
+import com.rewardsapp.rewards_backend.dto.DTOMapper;
 import com.rewardsapp.rewards_backend.entity.Customer;
 import com.rewardsapp.rewards_backend.repository.CustomerRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -19,33 +23,39 @@ public class CustomerController {
         this.customerRepository = customerRepository;
     }
 
-    // CREATE a new customer
     @Operation(summary = "Create a new customer")
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer customer) {
-        return customerRepository.save(customer);
+    public CustomerDTO createCustomer(@RequestBody Customer customer) {
+        Customer saved = customerRepository.save(customer);
+        return DTOMapper.toCustomerDTO(saved);
     }
 
-    // READ all customers
     @Operation(summary = "Get all customers")
     @GetMapping
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> getAllCustomers() {
+        List<Customer> customers = customerRepository.findAll();
+        return customers.stream()
+                .map(DTOMapper::toCustomerDTO)
+                .collect(Collectors.toList());
     }
 
     // READ single customer by ID
     @GetMapping("/{id}")
-    public Customer getCustomerById(@PathVariable Long id) {
-        return customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+    public CustomerDTO getCustomerById(@PathVariable Long id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        return DTOMapper.toCustomerDTO(customer);
     }
 
     // UPDATE customer
     @PutMapping("/{id}")
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
-        Customer existing = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+    public CustomerDTO updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
+        Customer existing = customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
         existing.setName(updatedCustomer.getName());
         existing.setEmail(updatedCustomer.getEmail());
-        return customerRepository.save(existing);
+        Customer saved = customerRepository.save(existing);
+        return DTOMapper.toCustomerDTO(saved);
     }
 
     // DELETE customer

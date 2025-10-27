@@ -1,0 +1,171 @@
+$app-dark: #1f2937; // dark background
+$app-accent: #667eea; // blue accent
+$app-text: #e2e8f0; // light gray
+$app-hover: #fbbf24; // yellow highlight
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $app-dark;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  border-bottom: 2px solid $app-dark;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .logo {
+    display: flex;
+    align-items: center;
+
+    .logo-icon {
+      font-size: 1.8rem;
+      margin-right: 0.5rem;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $app-text;
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+
+    a {
+      color: $app-text;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.3s;
+
+      &:hover {
+        color: $app-accent;
+
+        &::after {
+          width: 100%;
+        }
+      }
+
+      &.active {
+        color: $app-accent;
+
+        &::after {
+          width: 100%;
+        }
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        height: 2px;
+        width: 0;
+        background-color: $app-accent;
+        transition: width 0.3s;
+      }
+    }
+  }
+
+  .user-profile {
+    color: $app-text;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .nav-links {
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+  }
+}
+
+$app-dark: #1f2937;
+$app-text: #e2e8f0;
+$app-accent: #667eea;
+$app-hover: #fbbf24;
+
+.app-footer {
+  background-color: $app-dark;
+  color: $app-text;
+  padding: 2rem 3rem;
+  border-top: 2px solid $app-dark;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    .footer-brand {
+      .logo-icon {
+        font-size: 1.8rem;
+        margin-right: 0.5rem;
+      }
+      .logo-text {
+        font-weight: 700;
+        font-size: 1.4rem;
+        display: block;
+      }
+      p {
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: $app-text;
+      }
+    }
+
+    .footer-links, .footer-social {
+      h4 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: $app-accent;
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        color: $app-text;
+        margin-bottom: 0.3rem;
+        transition: color 0.3s;
+
+        &:hover {
+          color: $app-hover;
+        }
+      }
+
+      span {
+        font-size: 1.3rem;
+        margin-right: 0.5rem;
+        transition: transform 0.3s;
+        &:hover {
+          transform: scale(1.2);
+          color: $app-accent;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+  }
+}
+
+

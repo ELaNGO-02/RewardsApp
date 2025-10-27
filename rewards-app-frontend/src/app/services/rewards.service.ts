@@ -31,7 +31,9 @@ export class RewardsService {
   }
 
   addTransaction(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/transactions`, data);
+    return this.http.post(`${this.baseUrl}/transactions`, data, {
+    headers: { 'Content-Type': 'application/json' }
+  });
   }
 
 
